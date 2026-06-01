@@ -36,7 +36,7 @@ You can install this project either with conda or the Python Package Installer (
   ```
   - Then, install CLEVER (inside CLEVER folder with setup.py):
   ```bash
-      pip3 install -e .
+  pip3 install -e .
   ```
   - Optionally, if you want the evaluation pipeline, install:
   ```bash
@@ -85,7 +85,7 @@ You can install this project either with conda or the Python Package Installer (
 │   ├── bpnn                                <- CLEVER using Bayesian progressive neural networks
 │       ├── demo.py                         <- Demo file with learning-based priors
 │       ├── prior_all_objects.py            <- Learn priors for predefined objects
-│       ├── prior_per_object.pt             <- Learn priors for predefined objects per class
+│       ├── prior_per_object.py             <- Learn priors for predefined objects per class
 │   ├── pnn                                 <- CLEVER using deterministic progressive neural networks
 │       ├── demo.py                         <- Demo file without priors
 │       ├── train_all_objects.py            <- Train a progressive network for predefined objects
