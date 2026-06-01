@@ -104,3 +104,30 @@ pip install pytest
   667  2024-04-03 15:44:19  cd ..
   668  2024-04-03 15:44:20  cd clever
   669  2024-04-03 15:44:29  pip3 install -e .
+
+
+----------------
+install pytorch first and make sure it has all the relevant files.
+conda install pytorch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0 pytorch-cuda=12.1 -c pytorch -c nvidia
+
+then install ultralytics (this installs opencv 4.13.0)
+pip install ultralytics
+
+then run
+pip install tqdm pyscaffold prompt_toolkit toma fvcore
+
+robustness_metrics
+pip install "git+https://github.com/google-research/robustness_metrics.git#egg=robustness_metrics"
+
+pip3 install -e .
+
+----------------
+- now change the code to incorporate SAM2 instead of SAM + AOK (major)
+- test the code with phone based images
+----------------
+- add a detailed tutorial (minor)
+----------------
+- clean up and include docstring (minor)
+----------------
+- research blog (major)
+----------------

@@ -38,9 +38,8 @@ from torch.utils.data import DataLoader
 from bpnn.pnn import ProgressiveNeuralNetwork
 from clever.trainer import pnn_fit_the_knowns, \
     pnn_fit_the_unknowns, bpnn_fit_the_unknowns, bpnn_fit_the_knowns
-from clever.tracker.aottracker import _palette
-from clever.tracker.segtracker import SegTracker
-from clever.tracker.model_args import aot_args, sam_args, segtracker_args
+# from clever.tracker.segtracker import SegTracker
+# from clever.tracker.model_args import aot_args,segtracker_args sam_args
 from clever.model import ClassifierNet, clever_pnn, TheCleverNetwork
 from clever.utils import extract_objects, \
     draw_mask, crop_objs, draw_padding
@@ -109,8 +108,9 @@ class TheSystem:
         Returns:
             _type_: _description_
         """
-        segtracker = SegTracker(segtracker_args, sam_args, aot_args)
-        segtracker.restart_tracker()
+        # segtracker = SegTracker(segtracker_args, sam_args, aot_args)
+        segtracker = SAM(self.args.model_path + "./clever_v1/" + "sam2.1_t.pt")
+        # segtracker.restart_tracker()
         return segtracker
 
     def assign_bbox(self, bbox: List):
@@ -157,12 +157,14 @@ class TheSystem:
             image = image_acqusition.return_image()
             image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
-            pred_mask, masked_frame = self.segtracker.seg_acc_bbox(image, self.bbox)
+            #pred_mask, masked_frame = self.segtracker.seg_acc_bbox(image, self.bbox)
+            masked_frame = self.segtracker(image, bboxes=boxes)
 
             masked_frame = cv2.circle(
                 masked_frame, (int(masked_frame.shape[1]/2), int(masked_frame.shape[0]/2)), 
                 radius=10, color=(0, 0, 0), thickness=-1
             )
+            ## TODO: we need to change this to 
 
             # display the image and quit
             cv2.imshow('Press q to select next candidate. Press s to make a selection.', masked_frame)
@@ -311,7 +313,7 @@ class TheSystem:
         # update tracker index
         self.frame_idx = self.frame_idx + 1
         return pred_masks, cropped_images, class_string, class_probs
-    
+
     def _every_object_tracking(self, image: np.array, frame_idx: int):
         """_summary_
 
@@ -322,41 +324,58 @@ class TheSystem:
         Returns:
             _type_: _description_
         """
-        if self.bbox is None:
-            # Run segmentation every sam_gap frame
-            if (frame_idx % self.sam_gap) == 0:
-                pred_mask = self.segtracker.seg(image)
+        # if points are not set
+        if self.points is None:
+            raise AttributeError
+        result = self.segtracker(image, points=[self.points[0][0], self.points[0][1]], labels=[1])
+        return result[0].cpu().numpy().masks.data.squeeze()
+    
+    
+    # def _every_object_tracking(self, image: np.array, frame_idx: int):
+    #     """_summary_
 
-                # Empty cache
-                torch.cuda.empty_cache()
-                gc.collect()
+    #     Args:
+    #         image (np.array): RGB images
+    #         frame_idx (int): i-th frame number for deciding tracker modes
+
+    #     Returns:
+    #         _type_: _description_
+    #     """
+    #     if self.bbox is None:
+    #         # Run segmentation every sam_gap frame
+    #         if (frame_idx % self.sam_gap) == 0:
+    #             pred_mask = self.segtracker.seg(image)
+
+    #             # Empty cache
+    #             torch.cuda.empty_cache()
+    #             gc.collect()
                 
-                # If not first frame, track objects
-                if frame_idx != 0:
-                    # Track objects
-                    track_mask = self.segtracker.track(image)
+    #             # If not first frame, track objects
+    #             if frame_idx != 0:
+    #                 # Track objects
+    #                 track_mask = self.segtracker.track(image)
 
-                    # Find new objects, and update tracker with new objects
-                    new_obj_mask = self.segtracker.find_new_objs(track_mask, pred_mask)
-                    pred_mask = track_mask + new_obj_mask
+    #                 # Find new objects, and update tracker with new objects
+    #                 new_obj_mask = self.segtracker.find_new_objs(track_mask, pred_mask)
+    #                 pred_mask = track_mask + new_obj_mask
 
-                # Add objects to tracker
-                self.segtracker.add_reference(image, pred_mask)
-            else:
-                # Track objects
-                pred_mask = self.segtracker.track(image, update_memory=False)
-        else:
-            if (frame_idx % self.sam_gap) == 0:
-                # Add objects to tracker
-                if self.image_ref is not None and self.pred_mask_ref is not None:
-                    self.segtracker.add_reference(self.image_ref, self.pred_mask_ref)
-                else:
-                    raise NotImplementedError
+    #             # Add objects to tracker
+    #             self.segtracker.add_reference(image, pred_mask)
+    #         else:
+    #             # Track objects
+    #             pred_mask = self.segtracker.track(image, update_memory=False)
+    #     else:
+    #         if (frame_idx % self.sam_gap) == 0:
+    #             # Add objects to tracker
+    #             if self.image_ref is not None and self.pred_mask_ref is not None:
+    #                 self.segtracker.add_reference(self.image_ref, self.pred_mask_ref)
+    #             else:
+    #                 raise NotImplementedError
             
-            # Track objects
-            pred_mask = self.segtracker.track(image, update_memory=False)
+    #         # Track objects
+    #         pred_mask = self.segtracker.track(image, update_memory=False)
 
-        return pred_mask
+    #     return pred_mask
     
     def _object_classification_on_images(self, cropped_images: dict, is_temporal: bool = False):
         """_summary_

@@ -23,9 +23,11 @@ from scipy.ndimage import binary_dilation
 from PIL import Image
 from typing import Optional, Callable, Tuple, Any, Dict, List
 
-from clever.tracker.aottracker import _palette
 from clever.predictions import cartesian, barycentric
 
+np.random.seed(200)
+_palette = ((np.random.random((3*255))*0.7+0.3)*255).astype(np.uint8).tolist()
+_palette = [0,0,0]+_palette
 
 def crop_objs(pred_mask: np.ndarray, obj_id: int, frame: np.ndarray):
     """_summary_
@@ -167,12 +169,6 @@ def draw_masks_labels(masked_frame: np.ndarray,
         contours, _ = cv2.findContours(crop_mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         cv2.drawContours(masked_frame, contours, -1, color, 2)
     return masked_frame
-
-def save_prediction(pred_mask, output_dir, file_name):
-    save_mask = Image.fromarray(pred_mask.astype(np.uint8))
-    save_mask = save_mask.convert(mode='P')
-    save_mask.putpalette(_palette)
-    save_mask.save(os.path.join(output_dir, file_name))
 
 def colorize_mask(pred_mask: np.ndarray):
     save_mask = Image.fromarray(pred_mask.astype(np.uint8))

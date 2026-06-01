@@ -26,7 +26,6 @@ from scipy.ndimage import binary_dilation
 from PIL import Image
 from typing import Optional, Callable, Tuple, Any, Dict, List
 
-from clever.tracker.aottracker import _palette
 from clever.predictions import cartesian, barycentric
 
 
