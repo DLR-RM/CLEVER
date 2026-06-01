@@ -54,10 +54,8 @@ if __name__ == "__main__":
     seq_12 = ["knife"] # non-deformable
     seq_13 = ["pan"] # non-deformable
     seq_14 = ["spoon"] # non-deformable
-    seqs = [seq_0, seq_1]
-    #, seq_2, seq_3, seq_4, seq_5, seq_6, \
-    #        seq_7, seq_8, seq_9, seq_10, seq_11, seq_12, \
-    #        seq_13, seq_14]
+    seqs = [seq_0, seq_1, seq_2, seq_3, seq_4, seq_5, seq_6, \
+        seq_7, seq_8, seq_9, seq_10, seq_11, seq_12, seq_13, seq_14]
 
     # save the images / path names of considered objects
     for i, seq in enumerate(seqs):

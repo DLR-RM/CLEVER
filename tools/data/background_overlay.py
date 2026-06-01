@@ -6,8 +6,6 @@ import random
 import argparse
 from PIL import Image
 
-# python3 tools/data/background_overlay.py -i /home_local/lee_jn/CLEVER/data/model/cad/apple/ -b /home_local/lee_jn/CLEVER/data/model/cad/background_w/
-
 
 def main(args):
     # Create an output directory if `overwrite` is not selected

@@ -19,32 +19,29 @@ CLEVER is a stream-based active learning system that improves the robustness of 
 You can install this project either with conda or the Python Package Installer (pip).
 
 1. Clone or download the repository
-     ```bash
-     git clone https://rmc-github.robotic.dlr.de/lee-jn/CLEVER.git
-     ```
-2. Install the packages either with conda or with pip:
-   - conda (recommended):
-     - Create a new environment called `clever`
-     ```bash
-     conda create -n clever python=3.10
-     conda activate clever
-     ```
-     - Install [PyTorch and Torchvision](https://pytorch.org/get-started/locally/)
-     - Recommended to install versions above 2.2.0
-     - Go into the root folder and install the remaining packages:
-     ```bash
-     pip install ultralytics
-
-     pip install tqdm pyscaffold prompt_toolkit toma fvcore
-     ```
-     - Then, install CLEVER (inside CLEVER folder with setup.py):
-     ```bash
-          pip3 install -e .
-     ```
-     - Optionally, if you want the evaluation pipeline, install:
-     ```bash
-     pip install "git+https://github.com/google-research/robustness_metrics.git#egg=robustness_metrics"
-     ```
+  ```bash
+  git clone https://rmc-github.robotic.dlr.de/lee-jn/CLEVER.git
+  ```
+2. Install the packages either with conda (recommended) or with pip:
+  - Create a new environment called `clever`
+  ```bash
+  conda create -n clever python=3.10
+  conda activate clever
+  ```
+  - Install [PyTorch and Torchvision](https://pytorch.org/get-started/locally/). I recommend to install versions above 2.2.0
+  - Go into the root folder and install the remaining packages:
+  ```bash
+  pip install ultralytics
+  pip install tqdm pyscaffold prompt_toolkit toma fvcore
+  ```
+  - Then, install CLEVER (inside CLEVER folder with setup.py):
+  ```bash
+      pip3 install -e .
+  ```
+  - Optionally, if you want the evaluation pipeline, install:
+  ```bash
+  pip install "git+https://github.com/google-research/robustness_metrics.git#egg=robustness_metrics"
+  ```
 
 ## Project Organization
 
@@ -52,17 +49,17 @@ You can install this project either with conda or the Python Package Installer (
 ├── LICENSE.txt                             <- The GNU General Public License.
 ├── README.md                               <- The top-level README.
 ├── data                                    <- The datasets used in the experiments.
-│   ├── raw                                 <- Raw data files for
-│   │   ├── Concrete_Data.xls               <-     the Concrete Compression Strength Dataset and
-│   │   └── ENB2012_data.xlsx               <-     the Energy Efficiency Dataset.
-│   └── torch                               <- All other datasets are automatically downloaded and 
-│                                                saved here.
+│   ├── model                               <- Raw data files for
+│   │   ├── clever_v1                       <- Folder where classifier models are being stored
+│   │   └── dinov2                          <- Folder where dinov2 weights are being saved
+|   |   └── sam/weight                      <- Folder segment anything models are being saved
+│   └── images                              <- All other relevant images are saved here
+|   |   └── pool                            <- Folder that keeps pool of saved images
 ├── pyproject.toml                          <- Build system configuration.
 ├── setup.cfg                               <- Declarative configuration of the project.
 ├── setup.py
 ├── src                                     <- The implementation of the main functionality.
-│   ├── curvature                           <- The curvature implementations 
-│   │   │                                       (fork of https://github.com/DLR-RM/curvature).
+│   ├── curvature                           <- The curvature implementations for Laplace Approximation
 │   │   ├── curvatures.py                   <- Different curvature approximations including K-FOC.
 │   │   └── utils.py                        <- Utilities to compute the curvatures (e.g. power method).
 │   └── bpnn                                <- The Bayesian Progressive Neural Networks implementation.
@@ -72,6 +69,17 @@ You can install this project either with conda or the Python Package Installer (
 │       ├── bpnn.py                         <- Main implementation of BPNN and utility functions to fit it.
 │       ├── pnn.py                          <- Implementation of PNN (also with MC Dropout) and the 
 │       │                                       fitting of general PNN and its adaptions.
+│       └── utils.py                        <- Utility functions for BPNN (e.g. metrics, training loop)
+│   └── clever                              <- The CLEVER implementation.
+│       ├── data                            <- Contains different data loaders
+│       └── activelearner.py                <- Implementation of acquisition including batchbald
+│       └── baselines.py                    <- Baseline implementations
+│       └── clever.py                       <- Main implementation of CLEVER
+│       └── metric.py                       <- Utility functions for evaluation
+│       └── model.py                        <- Progressive model with Bayesian priors
+│       └── predictions.py                  <- Different prediction mechanisms
+│       └── priors.py                       <- Prior learning components
+│       └── trainer.py                      <- Functions to train BPNN
 │       └── utils.py                        <- Utility functions for BPNN (e.g. metrics, training loop)
 ├── tools                                   <- Tools to run experiments.
 │   ├── evaluate_experiment.py              <- Functions to evaluate the JSON files after the training.

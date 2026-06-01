@@ -13,9 +13,8 @@
 ################################################################################
 
 """
-BatchBald implementation for clever system.
-
-Adapted based on: https://github.com/BlackHC/batchbald_redux
+Implementation for active learning. This is currently only for classification, but it can be extended to other tasks.
+Mainly includes BatchBaLD, but it can be extended to other active learning methods.
 """
 
 import torch

@@ -26,8 +26,6 @@ from scipy.ndimage import binary_dilation
 from PIL import Image
 from typing import Optional, Callable, Tuple, Any, Dict, List
 
-from clever.predictions import cartesian, barycentric
-
 
 def evaluate(probs, labels_test):
     """Evaluates metrics.

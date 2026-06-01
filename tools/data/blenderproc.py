@@ -7,15 +7,6 @@ import matplotlib.pyplot as plt
 
 from PIL import Image
 
-
-# TODO: generate apple with white background.
-# TODO: generate apple with black background.
-# TODO: save everything as video file.
-# TODO: train your neural network prior.
-
-# background: $ python3 -c "from PIL import Image;Image.new('RGB', (1900, 1080), color = (255,255,255)).save('Img.jpg')"
-
-
 def main(args):
     bproc.init()
 
