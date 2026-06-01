@@ -43,6 +43,14 @@ You can install this project either with conda or the Python Package Installer (
   pip install "git+https://github.com/google-research/robustness_metrics.git#egg=robustness_metrics"
   ```
 
+## Basic Usage
+
+We have a webcam based demonstration. For this, download the models and images from the database https://zenodo.org/records/20497369. The files from model.zip should go to data/model, whereas the folder pool should be placed under data/images. Connect your webcam and give the access permission. Then, run the code:
+
+```bash
+python tools/bpnn/demo.py --model_path PATH --pooldata_dir PATH --model_pt_file PATH --prior_pt_file PATH
+```
+
 ## Project Organization
 
 ```
@@ -52,7 +60,7 @@ You can install this project either with conda or the Python Package Installer (
 │   ├── model                               <- Raw data files for
 │   │   ├── clever_v1                       <- Folder where classifier models are being stored
 │   │   └── dinov2                          <- Folder where dinov2 weights are being saved
-|   |   └── sam/weight                      <- Folder segment anything models are being saved
+|   |   └── mobilesam/weight                      <- Folder segment anything models are being saved
 │   └── images                              <- All other relevant images are saved here
 |   |   └── pool                            <- Folder that keeps pool of saved images
 ├── pyproject.toml                          <- Build system configuration.
