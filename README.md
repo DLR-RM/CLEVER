@@ -82,16 +82,16 @@ You can install this project either with conda or the Python Package Installer (
 │       └── trainer.py                      <- Functions to train BPNN
 │       └── utils.py                        <- Utility functions for BPNN (e.g. metrics, training loop)
 ├── tools                                   <- Tools to run experiments.
-│   ├── evaluate_experiment.py              <- Functions to evaluate the JSON files after the training.
-│   ├── mnist_dataloaders.py                <- Generates the dataloaders used to train the small-scale 
-│   │                                           continual learning experiment.
-│   ├── fewshot.py                          <- The fewshot learning uncertainty dataset.
-│   ├── fewshot_dataloaders.py              <- Generates the dataloaders used for fewshot learning.
-│   ├── not_mnist.py                        <- The NotMNIST Dataset.
-│   ├── run_experiment.py                   <- Functions to run multiple configurations of BPNN and PNN.
-│   ├── wrgbd.py                            <- The Washington University's RGB-D Object (WRGBD) Dataset.
-│   └── wrgbd_dataloaders.pt                <- Generates the dataloaders used to train the large-scale 
-│                                               continual learning experiment.
+│   ├── bpnn                                <- CLEVER using Bayesian progressive neural networks
+│       ├── demo.py                         <- Demo file with learning-based priors
+│       ├── prior_all_objects.py            <- Learn priors for predefined objects
+│       ├── prior_per_object.pt             <- Learn priors for predefined objects per class
+│   ├── pnn                                 <- CLEVER using deterministic progressive neural networks
+│       ├── demo.py                         <- Demo file without priors
+│       ├── train_all_objects.py            <- Train a progressive network for predefined objects
+│       ├── train_per_object.py             <- Train a progressive network for predefined objects per class
+│   ├── data                                <- Generates the dataloaders used to train the small-scale 
+│   ├── scripts                             <- Generates the dataloaders used to train the small-scale 
 └── .coveragerc                             <- Configuration for coverage reports of unit tests.
 ```
 
